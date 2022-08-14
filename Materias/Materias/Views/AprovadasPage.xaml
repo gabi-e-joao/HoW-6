@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Materias.Views.AprovadasPage"
+             xmlns:local="clr-namespace:Materias.ViewModels"  
+             xmlns:model="clr-namespace:Materias.Models"
+             Title="Matérias aprovadas">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="White"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <RefreshView x:DataType="local:AprovadoViewModel" Command="{Binding LoadMateriasViewModel}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+            <Grid>
+                <CollectionView x:Name="MateriasListView"
+                    ItemsSource="{Binding Materias}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="10" x:DataType="model:Materia">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        NumberOfTapsRequired="1"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:AprovadoViewModel}}, Path=ItemTapped}"
+                                        CommandParameter="{Binding .}">
+                                    </TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>                                
+                                <Frame BackgroundColor="{StaticResource Primary}">
+                                    <StackLayout>
+                                        <Label Text="{Binding Nome}"
+                                               LineBreakMode="NoWrap" 
+                                               Style="{DynamicResource ListItemTextStyle}" 
+                                               FontSize="16"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding Professor}"
+                                               LineBreakMode="NoWrap" 
+                                               Style="{DynamicResource ListItemTextStyle}" 
+                                               FontSize="14"
+                                               FontAttributes="Italic"
+                                               Margin="0,0,0,15"/>
+                                        <Grid ColumnDefinitions="*, *"
+                                              RowDefinitions="*, *, *, *"
+                                              HorizontalOptions="CenterAndExpand">
+                                            <Label Text="Período"
+                                                   FontAttributes="Bold"
+                                                   Style="{DynamicResource ListItemTextStyle}" 
+                                                   FontSize="14"
+                                                   HorizontalTextAlignment="Start"
+                                                   HorizontalOptions="StartAndExpand"
+                                                   Grid.Row="0"
+                                                   Grid.Column="0"/>
+                                            <Label Text="{Binding Periodo}"
+                                                   Style="{DynamicResource ListItemTextStyle}" 
+                                                   FontSize="14"
+                                                   Grid.Row="1"
+                                                   Grid.Column="0"/>
+                                            <Label Text="Nota"
+                                                   FontAttributes="Bold"
+                                                   Style="{DynamicResource ListItemTextStyle}" 
+                                                   FontSize="14"
+                                                   HorizontalTextAlignment="End"
+                                                   HorizontalOptions="EndAndExpand"
+                                                   Grid.Row="0"
+                                                   Grid.Column="1"/>
+                                            <Label Text="{Binding Nota}"
+                                                   Style="{DynamicResource ListItemTextStyle}" 
+                                                   FontSize="14"
+                                                   HorizontalTextAlignment="End"
+                                                   HorizontalOptions="EndAndExpand"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"/>
+                                            <Label Text="Início"
+                                                   FontAttributes="Bold"
+                                                   Style="{DynamicResource ListItemTextStyle}" 
+                                                   FontSize="14"
+                                                   HorizontalTextAlignment="Start"
+                                                   HorizontalOptions="StartAndExpand"
+                                                   Grid.Row="3"
+                                                   Grid.Column="0"/>
+                                            <Label Text="{Binding DataInicioStr}"
+                                                   Style="{DynamicResource ListItemTextStyle}" 
+                                                   FontSize="14"
+                                                   Grid.Row="4"
+                                                   Grid.Column="0"/>
+                                            <Label Text="Fim"
+                                                   FontAttributes="Bold"
+                                                   Style="{DynamicResource ListItemTextStyle}" 
+                                                   FontSize="14"
+                                                   HorizontalTextAlignment="End"
+                                                   HorizontalOptions="EndAndExpand"
+                                                   Grid.Row="3"
+                                                   Grid.Column="1"/>
+                                            <Label Text="{Binding DataFimStr}"
+                                                   Style="{DynamicResource ListItemTextStyle}" 
+                                                   FontSize="14"
+                                                   HorizontalTextAlignment="End"
+                                                   HorizontalOptions="EndAndExpand"
+                                                   Grid.Row="4"
+                                                   Grid.Column="1"/>                                        
+                                        </Grid>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <ImageButton x:Name="fab_plus"
+                             Source="fab_plus"
+                             BackgroundColor="Transparent"
+                             WidthRequest="70"
+                             HeightRequest="70"
+                             Margin="10"
+                             HorizontalOptions="End"
+                             VerticalOptions="End"
+                             Command="{Binding AddMateriaCommand}"/>
+            </Grid>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>

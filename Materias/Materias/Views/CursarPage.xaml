@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Materias.Views.CursarPage"
+             xmlns:local="clr-namespace:Materias.ViewModels"  
+             xmlns:model="clr-namespace:Materias.Models"  
+             Title="Apto a cursar">
+    <ContentPage.Content>
+        <RefreshView x:DataType="local:CursarViewModel" Command="{Binding LoadMateriasCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+            <Grid>
+                <CollectionView x:Name="MateriasListView"
+                        ItemsSource="{Binding Materias}"
+                        SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="10" x:DataType="model:Materia">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        NumberOfTapsRequired="1"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:CursarViewModel}}, Path=ItemTapped}"
+                                        CommandParameter="{Binding .}">
+                                    </TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                                <Frame BackgroundColor="{StaticResource Primary}">
+                                    <StackLayout>
+                                        <Label Text="{Binding Nome}"
+                                               TextColor="White"
+                                               LineBreakMode="NoWrap" 
+                                               Style="{DynamicResource ListItemTextStyle}" 
+                                               FontSize="16"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding Professor}"
+                                               TextColor="White"
+                                               LineBreakMode="NoWrap" 
+                                               Style="{DynamicResource ListItemTextStyle}" 
+                                               FontSize="14"
+                                               FontAttributes="Italic"
+                                               Margin="0,0,0,15"/>
+
+                                        <Grid ColumnDefinitions="*, auto">
+                                            <Button Text="Iniciar matéria"
+                                                    BorderWidth="2"
+                                                    BorderColor="White"
+                                                    Margin="0,10,0,0"
+                                                    Grid.Column="0"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:CursarViewModel}}, Path=IniciarMateriaCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                            <ImageButton Source="btn_delete"
+                                                         BackgroundColor="Transparent"
+                                                         WidthRequest="50"
+                                                         HeightRequest="50"
+                                                         HorizontalOptions="End"
+                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type local:CursarViewModel}}, Path=DeletaCommand}"
+                                                         CommandParameter="{Binding .}"
+                                                         VerticalOptions="End"
+                                                         Grid.Column="1"/>
+                                        </Grid>                                        
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <ImageButton x:Name="fab_plus"
+                             Source="fab_plus"
+                             BackgroundColor="Transparent"
+                             WidthRequest="70"
+                             HeightRequest="70"
+                             Margin="10"
+                             HorizontalOptions="End"
+                             VerticalOptions="End"
+                             Command="{Binding AddMateriaCommand}"/>
+            </Grid>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>
